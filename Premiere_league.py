@@ -188,3 +188,53 @@ plt.ylabel('Équipes')
 plt.xlabel('Saison')
 plt.tight_layout()
 plt.show()
+
+# Initialisation des figures
+figs = []
+
+# 1. Quelle équipe a marqué le plus de buts à domicile et à l'extérieur?
+fig, ax = plt.subplots(figsize=(12, 8))
+total_goals.sort_values().plot(kind='barh', ax=ax, color='skyblue')
+ax.set_title("Total de buts marqués par équipe")
+ax.set_xlabel("Nombre de buts")
+figs.append(fig)
+plt.close()
+
+# 2. Quelle équipe a le meilleur ratio de buts marqués par rapport aux "expected goals"?
+fig, ax = plt.subplots(figsize=(12, 8))
+goal_ratio.sort_values().plot(kind='barh', ax=ax, color='lightcoral')
+ax.set_title("Ratio de buts marqués par rapport aux 'expected goals' par équipe")
+ax.set_xlabel("Ratio")
+figs.append(fig)
+plt.close()
+
+# 3. Comment l'assistance varie-t-elle en fonction des équipes à domicile?
+fig, ax = plt.subplots(figsize=(12, 8))
+attendance_avg.sort_values().plot(kind='barh', ax=ax, color='lightgreen')
+ax.set_title("Assistance moyenne par équipe à domicile")
+ax.set_xlabel("Assistance moyenne")
+figs.append(fig)
+plt.close()
+
+# 4. Qui sont les arbitres les plus courants et combien de matches ont-ils arbitrés?
+fig, ax = plt.subplots(figsize=(12, 8))
+referee_counts.head(10).sort_values().plot(kind='barh', ax=ax, color='lightgoldenrodyellow')
+ax.set_title("Top 10 des arbitres par nombre de matches arbitrés")
+ax.set_xlabel("Nombre de matches")
+figs.append(fig)
+plt.close()
+
+# 5. Comment la performance des équipes varie-t-elle au fil des semaines?
+# (Le code pour cette question est assez long car il implique un suivi des points cumulés pour chaque équipe au fil des semaines.)
+teams = df_premier_league['Home_Team'].unique()
+fig, ax = plt.subplots(figsize=(14, 10))
+for team in teams:
+    team_data = df_premier_league[df_premier_league['Home_Team'] == team]
+    ax.plot(team_data['Week'], team_data['Home_Points_Cumulative'], label=team)
+ax.set_title("Performance des équipes au fil des semaines")
+ax.set_xlabel("Semaine")
+ax.set_ylabel("Points cumulés")
+ax.legend(loc="upper left", bbox_to_anchor=(1,1), ncol=1)
+fig.tight_layout()
+figs.append(fig)
+plt.close()
